@@ -21,15 +21,15 @@ classdef Network < handle
             end
         end
         
-        function [] = fit(self, input, output, epochs, learning_rate)
+        function [] = fit(self, input, output, loss, epochs, learning_rate)
             layers_count = size(self.layers, 2);
             samples_count = size(input, 1);
             error = 0;
             for i=1:epochs
                 for j=1:samples_count
                     pred = self.predict(input(j,:));
-                    derror = pred - output(j,:);
-                    error = error + mean((output(j,:) - pred).^2, 'all');
+                    derror = loss.compute_derivative(output(j,:), pred);
+                    error = error + mean(loss.compute(output(j,:), pred), 'all');
                     for k=layers_count:-1:1
                         derror = self.layers{1,k}.back_propagation(derror, learning_rate);
                     end
