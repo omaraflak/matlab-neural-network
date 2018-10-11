@@ -1,6 +1,6 @@
 # Matlab Neural Network
 
-This is a simple and modulat way of implementing a neural network with Matlab.
+A simple and modular way of implementing a neural network with Matlab.
 
 # Example
 
