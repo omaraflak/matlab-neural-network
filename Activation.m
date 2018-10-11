@@ -12,6 +12,12 @@ classdef Activation < handle
             elseif name=="sigmoid"
                 self.activation = @(x) 1.0/(1.0+exp(-x));
                 self.derivative = @(x) exp(-x)/((1+exp(-x))^2);
+            elseif name=="relu"
+                self.activation = @(x) max(0,x);
+                self.derivative = @(x) max(0,x)/x;
+            elseif name=="linear"
+                self.activation = @(x) x;
+                self.derivative = @(x) 1.0;
             end
         end
         
