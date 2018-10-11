@@ -8,6 +8,6 @@ function [] = main()
     input = [0 0 ; 0 1 ; 1 0 ; 1 1];
     output = [0 ; 1 ; 1 ; 0];
     
-    net.fit(input, output, 1000, 0.2);
+    net.fit(input, output, Loss("mse"), 1000, 0.2);
     net.predict(input)
 end
