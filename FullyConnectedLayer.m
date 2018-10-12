@@ -1,7 +1,5 @@
 classdef FullyConnectedLayer < Layer
     properties(Access = private)
-        input_size
-        output_size
         weights
         bias
     end
@@ -26,14 +24,6 @@ classdef FullyConnectedLayer < Layer
             self.weights = self.weights - learning_rate*dWeights;
             self.bias = self.bias - learning_rate*dBias;
             in_error = error * self.weights';
-        end
-        
-        function is = get_input_size(self)
-            is = self.input_size;
-        end
-        
-        function os = get_output_size(self)
-            os = self.output_size;
         end
     end
 end

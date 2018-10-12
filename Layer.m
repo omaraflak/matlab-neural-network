@@ -1,5 +1,7 @@
 classdef (Abstract) Layer < handle
     properties(Access = protected)
+        input_size
+        output_size
         input_
         output_
     end
@@ -16,6 +18,14 @@ classdef (Abstract) Layer < handle
         
         function out = get_output(self)
             out = self.output_;
+        end
+        
+        function is = get_input_size(self)
+            is = self.input_size;
+        end
+        
+        function os = get_output_size(self)
+            os = self.output_size;
         end
     end
 end
