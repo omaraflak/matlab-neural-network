@@ -29,7 +29,7 @@ classdef Network < handle
                 for j=1:samples_count
                     pred = self.predict(input(j,:));
                     derror = loss.compute_derivative(output(j,:), pred);
-                    error = error + mean(loss.compute(output(j,:), pred), 'all');
+                    error = error + loss.compute(output(j,:), pred);
                     for k=layers_count:-1:1
                         derror = self.layers{1,k}.back_propagation(derror, learning_rate);
                     end
