@@ -1,12 +1,18 @@
 classdef Network < handle
     properties(Access = private)
         layers = {};
+        learning_rate
         loss
     end
     
     methods(Access = public)
         function add_layer(self, layer)
             self.layers{size(self.layers,2) + 1} = layer;
+        end
+        
+        function [] = build(self, loss, learning_rate)
+            self.loss = loss;
+            self.learning_rate = learning_rate;
         end
         
         function output = predict(self, input)            
@@ -22,18 +28,17 @@ classdef Network < handle
             end
         end
         
-        function [] = fit(self, input, output, loss, epochs, learning_rate)
+        function [] = fit(self, input, output, epochs)
             layers_count = size(self.layers, 2);
             samples_count = size(input, 1);
-            self.loss = loss;
             error = 0;
             for i=1:epochs
                 for j=1:samples_count
                     pred = self.predict(input(j,:));
-                    derror = loss.compute_derivative(output(j,:), pred);
-                    error = error + loss.compute(output(j,:), pred);
+                    derror = self.loss.compute_derivative(output(j,:), pred);
+                    error = error + self.loss.compute(output(j,:), pred);
                     for k=layers_count:-1:1
-                        derror = self.layers{1,k}.back_propagation(derror, learning_rate);
+                        derror = self.layers{1,k}.back_propagation(derror, self.learning_rate);
                     end
                 end
                 error = error / samples_count;
