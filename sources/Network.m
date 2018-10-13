@@ -1,6 +1,7 @@
 classdef Network < handle
     properties(Access = private)
         layers = {};
+        loss
     end
     
     methods(Access = public)
@@ -24,6 +25,7 @@ classdef Network < handle
         function [] = fit(self, input, output, loss, epochs, learning_rate)
             layers_count = size(self.layers, 2);
             samples_count = size(input, 1);
+            self.loss = loss;
             error = 0;
             for i=1:epochs
                 for j=1:samples_count
@@ -37,6 +39,11 @@ classdef Network < handle
                 error = error / samples_count;
                 fprintf('%d/%d   err=%f\n', i, epochs, error);
             end
+        end
+        
+        function [error] = evaluate(self, x_test, y_test)
+            y_pred = self.predict(x_test);
+            error = self.loss.compute(y_test, y_pred);
         end
     end
 end
