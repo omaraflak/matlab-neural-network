@@ -1,4 +1,4 @@
-function [] = xor()
+function [] = main()
     % add path to neural network
     addpath('../../sources');
     

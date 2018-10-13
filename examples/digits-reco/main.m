@@ -1,4 +1,4 @@
-function [] = test_network()
+function [] = main()
     % add path to neural network
     addpath('../../sources');
     
