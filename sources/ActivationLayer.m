@@ -5,7 +5,6 @@ classdef ActivationLayer < Layer
     
     methods(Access = public)
         function self = ActivationLayer(input_size, activation)
-            self.name = "activation_layer";
             self.input_size = input_size;
             self.output_size = input_size;
             self.activation = activation;
@@ -32,6 +31,10 @@ classdef ActivationLayer < Layer
             input_size = block{1};
             activation = Activation(block{2});
             layer = ActivationLayer(input_size, activation);
-        end 
+       end
+       
+       function name = get_name()
+           name = "activation_layer";
+       end
     end
 end

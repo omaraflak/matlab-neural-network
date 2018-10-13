@@ -53,23 +53,23 @@ classdef Network < handle
         
         function [] = save(self, filename)
             layers_count = size(self.layers, 2);
-            C = cell(1, layers_count);
+            data = cell(1, layers_count);
             for k=1:layers_count
-                C{1,k} = {self.layers{1,k}.name self.layers{1,k}.save()};
+                data{1,k} = {self.layers{1,k}.get_name() self.layers{1,k}.save()};
             end
-            save(filename, 'C');
+            save(filename, 'data');
         end
     end
     
     methods(Static)
         function net = load(filename)
-            data = load(filename, 'C');
-            C = data.C;
-            layers_count = size(C, 2);
+            file = load(filename, 'data');
+            data = file.data;
+            layers_count = size(data, 2);
             net = Network();
             for i=1:layers_count
-                layer_name = C{1,i}{1};
-                block_data = C{1,i}{2};
+                layer_name = data{1,i}{1};
+                block_data = data{1,i}{2};
                 layer = Layer.build_layer(layer_name, block_data);
                 net.add_layer(layer);
             end

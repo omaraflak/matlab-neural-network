@@ -5,10 +5,6 @@ classdef (Abstract) Layer < handle
         input_
         output_
     end
-
-    properties(Access = public)
-        name
-    end
     
     methods(Abstract)
         output = forward_propagation(self, input);
@@ -22,9 +18,9 @@ classdef (Abstract) Layer < handle
     
     methods(Static)
         function layer = build_layer(name, block)
-            if name=="fully_connected_layer"
+            if name==FullyConnectedLayer.get_name()
                 layer = FullyConnectedLayer.load(block);
-            elseif name=="activation_layer"
+            elseif name==ActivationLayer.get_name()
                 layer = ActivationLayer.load(block);
             end
         end
@@ -46,5 +42,9 @@ classdef (Abstract) Layer < handle
         function os = get_output_size(self)
             os = self.output_size;
         end
+    end
+    
+    methods(Access = public, Static)
+        name = get_name();
     end
 end
