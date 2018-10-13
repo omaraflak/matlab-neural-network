@@ -14,9 +14,12 @@ function [] = main()
     net.add_layer(FullyConnectedLayer(15, 10));
     net.add_layer(ActivationLayer(10, Activation('sigmoid')));
     
-    % train on 30 iterations, with a learning rate of 0.2
+    % set cost function and learning rate
+    net.build(Loss('mse'), 0.2);
+    
+    % train on 30 iterations
     fprintf("training...\n");
-    net.fit(x_train, y_train, Loss('mse'), 30, 0.2);
+    net.fit(x_train, y_train, 30);
     
     % calculate error
     error = net.evaluate(x_test, y_test);
