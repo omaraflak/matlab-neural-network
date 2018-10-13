@@ -5,10 +5,29 @@ classdef (Abstract) Layer < handle
         input_
         output_
     end
+
+    properties(Access = public)
+        name
+    end
     
     methods(Abstract)
         output = forward_propagation(self, input);
         in_error = back_propagation(self, error, learning_rate);
+        block = save(self);
+    end
+    
+    methods(Abstract, Static)
+        layer = load(block);
+    end
+    
+    methods(Static)
+        function layer = build_layer(name, block)
+            if name=="fully_connected_layer"
+                layer = FullyConnectedLayer.load(block);
+            elseif name=="activation_layer"
+                layer = ActivationLayer.load(block);
+            end
+        end
     end
     
     methods(Access = public)
