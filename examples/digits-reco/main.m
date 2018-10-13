@@ -16,24 +16,9 @@ function [] = main()
     
     % train on 30 iterations, with a learning rate of 0.2
     fprintf("training...\n");
-    loss = Loss('mse');
-    net.fit(x_train, y_train, loss, 30, 0.2);
-    
-    % test network on new data
-    output = net.predict(x_test);
-    output = arrayfun(@step_function, output);
+    net.fit(x_train, y_train, Loss('mse'), 30, 0.2);
     
     % calculate error
-    error = loss.compute(y_test, output);
+    error = net.evaluate(x_test, y_test);
     fprintf("total error = %f\n", error);    
-end
-
-function output = step_function(input)
-   if input > 0.9
-       output = 1.0;
-   elseif input < 0.1
-       output = 0.0;
-   else
-       output = input;
-   end
 end
