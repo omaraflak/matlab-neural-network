@@ -22,6 +22,8 @@ classdef (Abstract) Layer < handle
                 layer = FullyConnectedLayer.load(block);
             elseif name==ActivationLayer.get_name()
                 layer = ActivationLayer.load(block);
+            elseif name==ConvolutionalLayer.get_name()
+                layer = ConvolutionalLayer.load(block);
             end
         end
     end
