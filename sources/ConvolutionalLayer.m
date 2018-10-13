@@ -24,14 +24,30 @@ classdef ConvolutionalLayer < Layer
         
         function in_error = back_propagation(self, error, learning_rate)
             % to be completed...
+            
         end
         
-        function is = get_input_size(self)
-            is = self.input_size;
+        function block = save(self)
+            block{1} = self.input_size;
+            block{2} = self.output_size;
+            block{3} = self.kernel_size;
+            block{4} = self.kernel_count;
+            block{5} = self.kernels;
+        end
+    end
+    
+    methods(Static)
+        function layer = load(block)
+            input_size = block{1};
+            output_size = block{2};
+            kernel_size = block{3};
+            kernel_count = block{4};
+            layer = ConvolutionalLayer(input_size, output_size, kernel_size, kernel_count);
+            layer.kernels = block{5};
         end
         
-        function os = get_output_size(self)
-            os = self.output_size;
+        function name = get_name()
+            name = "convolutional_layer";
         end
     end
 end
