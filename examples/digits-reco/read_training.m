@@ -1,4 +1,4 @@
-% The training consist of 946 digits (0-9) drawn on a 32x32 array
+% The training file consists of 946 digits (0-9) drawn on a 32x32 array
 % After each digit, the number represented is written on a separate line
 
 function [x_train, y_train, x_test, y_test] = read_training(filename)
