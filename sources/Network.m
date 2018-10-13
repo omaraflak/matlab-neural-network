@@ -50,5 +50,29 @@ classdef Network < handle
             y_pred = self.predict(x_test);
             error = self.loss.compute(y_test, y_pred);
         end
+        
+        function [] = save(self, filename)
+            layers_count = size(self.layers, 2);
+            data = cell(1, layers_count);
+            for k=1:layers_count
+                data{1,k} = {self.layers{1,k}.get_name() self.layers{1,k}.save()};
+            end
+            save(filename, 'data');
+        end
+    end
+    
+    methods(Static)
+        function net = load(filename)
+            file = load(filename, 'data');
+            data = file.data;
+            layers_count = size(data, 2);
+            net = Network();
+            for i=1:layers_count
+                layer_name = data{1,i}{1};
+                block_data = data{1,i}{2};
+                layer = Layer.build_layer(layer_name, block_data);
+                net.add_layer(layer);
+            end
+        end
     end
 end

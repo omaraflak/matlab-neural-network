@@ -25,5 +25,26 @@ classdef FullyConnectedLayer < Layer
             self.bias = self.bias - learning_rate*dBias;
             in_error = error * self.weights';
         end
+        
+        function block = save(self)
+            block{1} = self.input_size;
+            block{2} = self.output_size;
+            block{3} = self.weights;
+            block{4} = self.bias;
+        end
+    end
+    
+    methods(Static)
+        function layer = load(block)
+            input_size = block{1};
+            output_size = block{2};
+            layer = FullyConnectedLayer(input_size, output_size);
+            layer.weights = block{3};
+            layer.bias = block{4};
+        end
+        
+        function name = get_name()
+            name = "fully_connected_layer";
+        end
     end
 end

@@ -2,10 +2,12 @@ classdef Activation < handle
     properties(Access = private)
         activation
         derivative
+        name
     end
     
     methods(Access = public)
         function self = Activation(name)
+            self.name = name;
             if name=="sigmoid"
                 self.activation = @(x) 1.0/(1.0+exp(-x));
                 self.derivative = @(x) exp(-x)/((1+exp(-x))^2);
@@ -30,6 +32,10 @@ classdef Activation < handle
         
         function activation_prime = get_activation_prime(self)
             activation_prime = self.derivative;
+        end
+        
+        function name = get_name(self)
+            name = self.name;
         end
         
         % leaky relu
