@@ -1,19 +1,27 @@
 classdef MaxPoolLayer < Layer
     properties(Access = private)
         kernel_size
+        input_depth
     end
     
     methods(Access = public)
         function self = MaxPoolLayer(input_size, kernel_size)
+            if length(input_size)==2
+                self.input_depth = 1;
+                self.output_size = input_size - kernel_size + 1;
+            else
+                self.input_depth = input_size(3);
+                self.output_size = [input_size(1)-kernel_size(1)+1 input_size(2)-kernel_size(2)+1 input_size(3)];
+            end
+            
             self.input_size = input_size;
-            self.output_size = input_size - kernel_size + 1;
             self.kernel_size = kernel_size;
         end
         
         function output = forward_propagation(self, input)
             self.input_ = input;
             self.output_ = zeros(self.output_size);
-            for k=1:self.input_size(3)
+            for k=1:self.input_depth
                 self.output_(:,:,k) = self.maxpool(input(:,:,k), self.kernel_size);
             end
             output = self.output_;
@@ -21,7 +29,7 @@ classdef MaxPoolLayer < Layer
         
         function in_error = back_propagation(self, error, ~)
             in_error = zeros(self.input_size);
-            for k=1:self.input_size(3)
+            for k=1:self.input_depth
                 in_error(:,:,k) = self.maxpool_back(self.input_(:,:,k), self.kernel_size, error(:,:,k));
             end
         end
