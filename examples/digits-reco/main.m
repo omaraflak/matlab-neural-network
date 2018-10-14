@@ -23,5 +23,5 @@ function [] = main()
     
     % calculate error
     error = net.evaluate(x_test, y_test);
-    fprintf("total error = %f\n", error);    
+    fprintf("error on test data = %f\n", error);    
 end
