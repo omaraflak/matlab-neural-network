@@ -3,6 +3,7 @@ classdef ConvolutionalLayer < Layer
         kernel_size
         kernel_count
         weights
+        bias
     end
     
     methods(Access = public)
@@ -12,18 +13,21 @@ classdef ConvolutionalLayer < Layer
             self.kernel_size = kernel_size;
             self.kernel_count = kernel_count;
             self.weights = rand(kernel_size);
+            self.bias = rand(self.output_size);
         end
         
         function output = forward_propagation(self, input)
             self.input_ = input;
-            self.output_ = self.cross_corr2(input, self.weights);
+            self.output_ = self.cross_corr2(input, self.weights) + self.bias;
             output = self.output_;
         end
         
         function in_error = back_propagation(self, error, learning_rate)
             in_error = conv2(error, self.weights);
             dWeights = self.cross_corr2(self.input_, error);
+            dBias = error;
             self.weights = self.weights - learning_rate*dWeights;
+            self.bias = self.bias - learning_rate*dBias;
         end
         
         function block = save(self)
