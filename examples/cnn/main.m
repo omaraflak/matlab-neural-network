@@ -8,7 +8,7 @@ function [] = main()
     net.add_layer(ActivationLayer([4 4 1], Activation('sigmoid')));
     
     net.build(Loss('mse'), 0.1);
-       
+    
     input = rand(10,10);
     output = rand(4,4);
     

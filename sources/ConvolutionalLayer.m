@@ -48,11 +48,22 @@ classdef ConvolutionalLayer < Layer
         end
         
         function block = save(self)
+            block{1} = self.input_size;
+            block{2} = self.kernel_size;
+            block{3} = self.kernel_count;
+            block{4} = self.weights;
+            block{5} = self.bias;
         end
     end
     
     methods(Static)
         function layer = load(block)
+            input_size = block{1};
+            kernel_size = block{2};
+            kernel_count = block{3};
+            layer = ConvolutionalLayer(input_size, kernel_size, kernel_count);
+            layer.weights = block{4};
+            layer.bias = block{5};
         end
         
         function name = get_name()
