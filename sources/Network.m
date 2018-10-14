@@ -17,15 +17,15 @@ classdef Network < handle
         
         function output = predict(self, input)
             layers_count = size(self.layers, 2);     
-            input_shape = self.layers{1}.get_input_size(); 
+            input_shape = self.layers{1}.get_input_size();
             output_shape = self.layers{layers_count}.get_output_size();
             
             samples_count = size(input, ndims(input_shape) + 1);
-            otherdims = repmat({':'}, 1, ndims(input_shape));
             output = zeros([output_shape samples_count]);
+            otherdims = repmat({':'}, 1, ndims(input_shape));
             
             for j=1:samples_count
-                out = input(otherdims{:}, 1);
+                out = input(otherdims{:}, j);
                 for i=1:layers_count
                     out = self.layers{1,i}.forward_propagation(out);
                 end
@@ -35,13 +35,16 @@ classdef Network < handle
         
         function [] = fit(self, input, output, epochs)
             layers_count = size(self.layers, 2);
-            samples_count = size(input, 1);
+            input_shape = self.layers{1}.get_input_size();
+            samples_count = size(input, ndims(input_shape) + 1);
+            otherdims = repmat({':'}, 1, ndims(input_shape));
+            
             error = 0;
             for i=1:epochs
                 for j=1:samples_count
-                    pred = self.predict(input(j,:));
-                    derror = self.loss.compute_derivative(output(j,:), pred);
-                    error = error + self.loss.compute(output(j,:), pred);
+                    pred = self.predict(input(otherdims{:}, j));
+                    derror = self.loss.compute_derivative(output(otherdims{:}, j), pred);
+                    error = error + self.loss.compute(output(otherdims{:}, j), pred);
                     for k=layers_count:-1:1
                         derror = self.layers{1,k}.back_propagation(derror, self.learning_rate);
                     end
