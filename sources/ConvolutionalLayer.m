@@ -8,12 +8,18 @@ classdef ConvolutionalLayer < Layer
     end
     
     methods(Access = public)
-        function self = ConvolutionalLayer(input_size, kernel_size, kernel_count)
+        function self = ConvolutionalLayer(input_size, kernel_size, kernel_count)            
+            if length(input_size)==2
+                self.input_depth = 1;
+                self.output_size = input_size - kernel_size + 1;
+            else
+                self.input_depth = input_size(3);
+                self.output_size = [input_size(1)-kernel_size(1)+1 input_size(2)-kernel_size(2)+1 input_size(3)];
+            end
+            
             self.input_size = input_size;
-            self.output_size = input_size - kernel_size + 1;
             self.kernel_size = kernel_size;
             self.kernel_count = kernel_count;
-            self.input_depth = input_size(3);
             self.weights = rand([kernel_size kernel_count]);
             self.bias = rand([self.output_size kernel_count]);
         end

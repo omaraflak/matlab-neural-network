@@ -29,7 +29,8 @@ classdef ActivationLayer < Layer
     methods(Static)
        function layer = load(block)
             input_size = block{1};
-            activation = Activation(block{2});
+            activation_name = block{2};
+            activation = Activation(activation_name);
             layer = ActivationLayer(input_size, activation);
        end
        
