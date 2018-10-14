@@ -25,6 +25,4 @@ function [] = main()
     
     % test network
     net.predict(input)
-    
-    net.save('network.mat')
 end
