@@ -23,3 +23,13 @@ net.build(Loss('mse'), 0.2);
 net.fit(input, output, 1000);
 net.predict(input)
 ```
+
+# Save / Load Network
+
+```matlab
+% save network
+net.save('network.mat');
+
+% load network
+net = Network.load('network.mat');
+```
