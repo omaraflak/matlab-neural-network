@@ -1,19 +1,17 @@
 function [] = main()
     addpath('../../sources');
     
+    [x_train, y_train, x_test, y_test] = read_training('training');
+    
     net = Network();
-    net.add_layer(ConvolutionalLayer([10 10 1], [5 5 1], 1));
-    net.add_layer(ActivationLayer([6 6 1], Activation('sigmoid')));
-    net.add_layer(MaxPoolLayer([6 6 1], [3 3 1]));
-    net.add_layer(ConvolutionalLayer([4 4 1], [3 3 1], 1));
-    net.add_layer(ActivationLayer([2 2 1], Activation('sigmoid')));
-    net.add_layer(FlattenLayer([2 2 1]));
+    net.add_layer(ConvolutionalLayer([32 32 1], [3 3 1], 5));
+    net.add_layer(ActivationLayer([30 30 5], Activation('sigmoid')));
+    net.add_layer(FlattenLayer([30 30 5]));
+    net.add_layer(FullyConnectedLayer(4500, 10));
+    net.add_layer(ActivationLayer([1 10], Activation('sigmoid')));
     
-    net.build(Loss('mse'), 0.2);
-       
-    input = rand(10,10);
-    output = rand(1,4);
+    net.build(Loss('mse'), 0.7);
     
-    net.fit(input, output, 100);
-    error = net.evaluate(input, output)
+    net.fit(x_train, y_train, 30);
+    error = net.evaluate(x_test, y_test)
 end
