@@ -20,15 +20,16 @@ classdef Network < handle
             input_shape = self.layers{1}.get_input_size();
             output_shape = self.layers{layers_count}.get_output_size();
             
-            samples_count = size(input, ndims(input_shape) + 1);
+            samples_count = size(input, size(input_shape, 2) + 1);
             output = zeros([output_shape samples_count]);
-            otherdims = repmat({':'}, 1, ndims(input_shape));
-            
+            otherdims = repmat({':'}, 1, size(input_shape, 2));
+                        
             for j=1:samples_count
                 out = input(otherdims{:}, j);
                 for i=1:layers_count
                     out = self.layers{1,i}.forward_propagation(out);
                 end
+                
                 output(otherdims{:}, j) = out;
             end
         end
@@ -36,8 +37,8 @@ classdef Network < handle
         function [] = fit(self, input, output, epochs)
             layers_count = size(self.layers, 2);
             input_shape = self.layers{1}.get_input_size();
-            samples_count = size(input, ndims(input_shape) + 1);
-            otherdims = repmat({':'}, 1, ndims(input_shape));
+            samples_count = size(input, size(input_shape, 2) + 1);
+            otherdims = repmat({':'}, 1, size(input_shape, 2));
             
             for i=1:epochs
                 error = 0;
