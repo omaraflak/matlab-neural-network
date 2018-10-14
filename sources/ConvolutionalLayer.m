@@ -21,9 +21,9 @@ classdef ConvolutionalLayer < Layer
         end
         
         function in_error = back_propagation(self, error, learning_rate)
+            in_error = conv2(error, self.weights);
             dWeights = self.cross_corr2(self.input_, error);
             self.weights = self.weights - learning_rate*dWeights;
-            in_error = conv2(error, self.input_);
         end
         
         function block = save(self)
