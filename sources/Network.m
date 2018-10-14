@@ -20,16 +20,16 @@ classdef Network < handle
             input_shape = self.layers{1}.get_input_size();
             output_shape = self.layers{layers_count}.get_output_size();
             
-            samples_count = size(input, size(input_shape, 2) + 1);
+            dims = size(input_shape, 2);
+            samples_count = size(input, dims + 1);
             output = zeros([output_shape samples_count]);
-            otherdims = repmat({':'}, 1, size(input_shape, 2));
+            otherdims = repmat({':'}, 1, dims);
                         
             for j=1:samples_count
                 out = input(otherdims{:}, j);
                 for i=1:layers_count
                     out = self.layers{1,i}.forward_propagation(out);
                 end
-                
                 output(otherdims{:}, j) = out;
             end
         end
@@ -43,7 +43,13 @@ classdef Network < handle
             for i=1:epochs
                 error = 0;
                 for j=1:samples_count
-                    pred = self.predict(input(otherdims{:}, j));
+                    % forward propagation
+                    pred = input(otherdims{:}, j);
+                    for k=1:layers_count
+                        pred = self.layers{1,k}.forward_propagation(pred);
+                    end
+                
+                    % backward propgation
                     derror = self.loss.compute_derivative(output(otherdims{:}, j), pred);
                     error = error + self.loss.compute(output(otherdims{:}, j), pred);
                     for k=layers_count:-1:1
