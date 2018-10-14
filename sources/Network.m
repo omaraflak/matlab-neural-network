@@ -39,8 +39,8 @@ classdef Network < handle
             samples_count = size(input, ndims(input_shape) + 1);
             otherdims = repmat({':'}, 1, ndims(input_shape));
             
-            error = 0;
             for i=1:epochs
+                error = 0;
                 for j=1:samples_count
                     pred = self.predict(input(otherdims{:}, j));
                     derror = self.loss.compute_derivative(output(otherdims{:}, j), pred);
