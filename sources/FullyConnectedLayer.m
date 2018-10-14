@@ -19,11 +19,11 @@ classdef FullyConnectedLayer < Layer
         end
         
         function in_error = back_propagation(self, error, learning_rate)
+            in_error = error * self.weights';
             dWeights = self.input_' * error;
             dBias = error;
             self.weights = self.weights - learning_rate*dWeights;
             self.bias = self.bias - learning_rate*dBias;
-            in_error = error * self.weights';
         end
         
         function block = save(self)
