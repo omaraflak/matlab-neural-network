@@ -24,6 +24,8 @@ classdef (Abstract) Layer < handle
                 layer = ActivationLayer.load(block);
             elseif name==ConvolutionalLayer.get_name()
                 layer = ConvolutionalLayer.load(block);
+            elseif name==MaxPoolLayer.get_name()
+                layer = MaxPoolLayer.load(block);
             end
         end
     end
