@@ -15,16 +15,21 @@ classdef Network < handle
             self.learning_rate = learning_rate;
         end
         
-        function output = predict(self, input)            
-            layers_count = size(self.layers, 2);
-            samples_count= size(input, 1);
-            output = zeros(samples_count, self.layers{layers_count}.get_output_size());
+        function output = predict(self, input)
+            layers_count = size(self.layers, 2);     
+            input_shape = self.layers{1}.get_input_size(); 
+            output_shape = self.layers{layers_count}.get_output_size();
+            
+            samples_count = size(input, ndims(input_shape) + 1);
+            otherdims = repmat({':'}, 1, ndims(input_shape));
+            output = zeros([output_shape samples_count]);
+            
             for j=1:samples_count
-                out = input(j,:);
+                out = input(otherdims{:}, 1);
                 for i=1:layers_count
                     out = self.layers{1,i}.forward_propagation(out);
                 end
-                output(j,:) = out;
+                output(otherdims{:}, j) = out;
             end
         end
         
