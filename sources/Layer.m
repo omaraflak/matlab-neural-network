@@ -26,6 +26,8 @@ classdef (Abstract) Layer < handle
                 layer = ConvolutionalLayer.load(block);
             elseif name==MaxPoolLayer.get_name()
                 layer = MaxPoolLayer.load(block);
+            elseif name==FlattenLayer.get_name()
+                layer = FlattenLayer.load(block);
             end
         end
     end
