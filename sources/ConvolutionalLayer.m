@@ -2,6 +2,7 @@ classdef ConvolutionalLayer < Layer
     properties(Access = private)
         kernel_size
         kernel_count
+        input_depth
         weights
         bias
     end
@@ -12,22 +13,38 @@ classdef ConvolutionalLayer < Layer
             self.output_size = input_size - kernel_size + 1;
             self.kernel_size = kernel_size;
             self.kernel_count = kernel_count;
-            self.weights = rand(kernel_size);
-            self.bias = rand(self.output_size);
+            self.input_depth = input_size(3);
+            self.weights = rand([kernel_size kernel_count]);
+            self.bias = rand([self.output_size kernel_count]);
         end
         
         function output = forward_propagation(self, input)
             self.input_ = input;
-            self.output_ = self.cross_corr2(input, self.weights) + self.bias;
+            self.output_ = zeros([self.output_size(1:2) self.input_depth*self.kernel_count]);
+            index = 1;            
+            for d=1:self.input_depth
+                for k=1:self.kernel_count
+                    self.output_(:,:,index) = self.cross_corr2(input(:,:,d), self.weights(:,:,k)) + self.bias(:,:,k);
+                    index = index + 1;
+                end
+            end
             output = self.output_;
         end
         
         function in_error = back_propagation(self, error, learning_rate)
-            in_error = conv2(error, self.weights);
-            dWeights = self.cross_corr2(self.input_, error);
-            dBias = error;
+            in_error = zeros([self.input_size self.kernel_count]);            
+            dWeights = zeros([self.kernel_size self.input_depth*self.kernel_count]);
+            index = 1;
+            for d=1:self.input_depth
+                for k=1:self.kernel_count
+                    in_error(:,:,index) = conv2(error(:,:,k), self.weights(:,:,k));
+                    dWeights(:,:,index) = self.cross_corr2(self.input_(:,:,d), error(:,:,k));
+                    index = index + 1;
+                end
+            end
+
             self.weights = self.weights - learning_rate*dWeights;
-            self.bias = self.bias - learning_rate*dBias;
+            self.bias = self.bias - learning_rate*error; % dBias = error
         end
         
         function block = save(self)
