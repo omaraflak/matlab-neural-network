@@ -20,7 +20,10 @@ A simple and modular way of implementing a neural network with Matlab.
 # Losses
 
 * Mean Squared Error ('mse')
-* Cross Entropy ('cross-entropy')
+* Mean Squared Logarithmic Error ('msle')
+* Mean Absolute Error ('mae')
+* Negative Logarithmic Likelihood ('neg_log_likelihood')
+* Cross Entropy ('cross_entropy')
 
 # Example
 Simple neural network applied to the XOR problem. See all examples **[here](https://github.com/OmarAflak/matlab-neural-network/blob/master/examples)**.
