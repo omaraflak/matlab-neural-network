@@ -2,8 +2,28 @@
 
 A simple and modular way of implementing a neural network with Matlab.
 
+# Layers
+
+* FullyConnectedLayer(input_shape, output_shape)
+* ConvolutionalLayer(input_shape, kernel_shape, layer_depth)
+* MaxPoolLayer(input_shape, kernel_shape)
+* FlattenLayer(input_shape)
+* ActivationLayer(input_shape, activation)
+
+# Activations
+
+* Sigmoid ('sigmoid')
+* Hyperbolic Tangant ('tanh')
+* Rectified Linear Unit ('relu')
+* Leaky Rectified Linear Unit ('leaky_relu')
+
+# Losses
+
+* Mean Squared Error ('mse')
+* Cross Entropy ('cross-entropy')
+
 # Example
-Simple neural network applied for the XOR problem. See [main.m](https://github.com/OmarAflak/matlab-neural-network/blob/master/examples/xor/main.m) file.
+Simple neural network applied to the XOR problem. See all examples **[here](https://github.com/OmarAflak/matlab-neural-network/blob/master/examples)**.
 
 ```matlab
     % IO data
