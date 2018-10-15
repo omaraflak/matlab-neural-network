@@ -23,6 +23,15 @@ classdef Activation < handle
             elseif name=="leaky_relu"
                 self.activation = @self.leaky_relu;
                 self.derivative = @self.leaky_relu_der;
+            elseif name=="exp"
+                self.activation = @(x) exp(x);
+                self.derivative = @(x) exp(x);
+            elseif name=="softplus"
+                self.activation = @(x) log(exp(x) + 1);
+                self.derivative = @(x) exp(x)/(exp(x) + 1);
+            elseif name=="softsign"
+                self.activation = @(x) x / (abs(x) + 1);
+                self.derivative = @(x) 1 / (abs(x) + 1);
             end
         end
         
