@@ -8,13 +8,12 @@ classdef MaxPoolLayer < Layer
         function self = MaxPoolLayer(input_size, kernel_size)
             if length(input_size)==2
                 self.input_depth = 1;
-                self.output_size = input_size - kernel_size + 1;
             else
                 self.input_depth = input_size(3);
-                self.output_size = [input_size(1)-kernel_size(1)+1 input_size(2)-kernel_size(2)+1 input_size(3)];
             end
             
             self.input_size = input_size;
+            self.output_size = [input_size(1:2)-kernel_size(1:2)+1 self.input_depth];
             self.kernel_size = kernel_size;
         end
         
