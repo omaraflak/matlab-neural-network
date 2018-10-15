@@ -1,14 +1,14 @@
 classdef ConvolutionalLayer < Layer
     properties(Access = private)
         kernel_size
-        kernel_count
+        layer_depth
         input_depth
         weights
         bias
     end
     
     methods(Access = public)
-        function self = ConvolutionalLayer(input_size, kernel_size, kernel_count)            
+        function self = ConvolutionalLayer(input_size, kernel_size, layer_depth)            
             if length(input_size)==2
                 self.input_depth = 1;
                 self.output_size = input_size - kernel_size + 1;
@@ -19,17 +19,17 @@ classdef ConvolutionalLayer < Layer
             
             self.input_size = input_size;
             self.kernel_size = kernel_size;
-            self.kernel_count = kernel_count;
-            self.weights = rand([kernel_size kernel_count]);
-            self.bias = rand([self.output_size kernel_count]);
+            self.layer_depth = layer_depth;
+            self.weights = rand([kernel_size layer_depth]);
+            self.bias = rand([self.output_size layer_depth]);
         end
         
         function output = forward_propagation(self, input)
             self.input_ = input;
-            self.output_ = zeros([self.output_size(1:2) self.input_depth*self.kernel_count]);
+            self.output_ = zeros([self.output_size(1:2) self.input_depth*self.layer_depth]);
             index = 1;            
             for d=1:self.input_depth
-                for k=1:self.kernel_count
+                for k=1:self.layer_depth
                     self.output_(:,:,index) = self.cross_corr2(input(:,:,d), self.weights(:,:,k)) + self.bias(:,:,k);
                     index = index + 1;
                 end
@@ -38,11 +38,11 @@ classdef ConvolutionalLayer < Layer
         end
         
         function in_error = back_propagation(self, error, learning_rate)
-            in_error = zeros([self.input_size self.kernel_count]);            
-            dWeights = zeros([self.kernel_size self.input_depth*self.kernel_count]);
+            in_error = zeros([self.input_size self.layer_depth]);            
+            dWeights = zeros([self.kernel_size self.input_depth*self.layer_depth]);
             index = 1;
             for d=1:self.input_depth
-                for k=1:self.kernel_count
+                for k=1:self.layer_depth
                     in_error(:,:,index) = conv2(error(:,:,k), self.weights(:,:,k));
                     dWeights(:,:,index) = self.cross_corr2(self.input_(:,:,d), error(:,:,k));
                     index = index + 1;
@@ -56,7 +56,7 @@ classdef ConvolutionalLayer < Layer
         function block = save(self)
             block{1} = self.input_size;
             block{2} = self.kernel_size;
-            block{3} = self.kernel_count;
+            block{3} = self.layer_depth;
             block{4} = self.weights;
             block{5} = self.bias;
         end
@@ -66,8 +66,8 @@ classdef ConvolutionalLayer < Layer
         function layer = load(block)
             input_size = block{1};
             kernel_size = block{2};
-            kernel_count = block{3};
-            layer = ConvolutionalLayer(input_size, kernel_size, kernel_count);
+            layer_depth = block{3};
+            layer = ConvolutionalLayer(input_size, kernel_size, layer_depth);
             layer.weights = block{4};
             layer.bias = block{5};
         end
