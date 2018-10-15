@@ -1,6 +1,6 @@
 function [] = main()
     % add path to neural network
-    addpath('../../sources');
+    addpath(genpath('../../sources'));
     
     % IO data
     input = [0 0 ; 0 1 ; 1 0 ; 1 1];

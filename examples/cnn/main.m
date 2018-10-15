@@ -1,5 +1,5 @@
 function [] = main()
-    addpath('../../sources');
+    addpath(genpath('../../sources'));
     
     fprintf('loading training data...');
     [x_train, y_train, x_test, y_test] = read_training('training');

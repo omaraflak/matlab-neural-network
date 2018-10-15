@@ -1,6 +1,6 @@
 function [] = main()
     % add path to neural network
-    addpath('../../sources');
+    addpath(genpath('../../sources'));
     
     % load data from training file
     fprintf("loading data...");
