@@ -16,6 +16,10 @@ A simple and modular way of implementing a neural network with Matlab.
 * Hyperbolic Tangant ('tanh')
 * Rectified Linear Unit ('relu')
 * Leaky Rectified Linear Unit ('leaky_relu')
+* Linear ('linear')
+* Exponential ('exp')
+* Softplus ('softplus')
+* Softsign ('softsign')
 
 # Losses
 
