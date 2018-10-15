@@ -8,44 +8,39 @@ classdef ConvolutionalLayer < Layer
     end
     
     methods(Access = public)
-        function self = ConvolutionalLayer(input_size, kernel_size, layer_depth)            
+        function self = ConvolutionalLayer(input_size, kernel_size, layer_depth)
             if length(input_size)==2
                 self.input_depth = 1;
-                self.output_size = input_size - kernel_size + 1;
             else
                 self.input_depth = input_size(3);
-                self.output_size = [input_size(1)-kernel_size(1)+1 input_size(2)-kernel_size(2)+1 input_size(3)];
             end
             
             self.input_size = input_size;
+            self.output_size = [input_size(1:2)-kernel_size(1:2)+1 layer_depth];
             self.kernel_size = kernel_size;
             self.layer_depth = layer_depth;
-            self.weights = rand([kernel_size layer_depth]);
-            self.bias = rand([self.output_size layer_depth]);
+            self.weights = rand([kernel_size self.input_depth layer_depth]);
+            self.bias = rand([self.output_size self.input_depth layer_depth]);
         end
         
         function output = forward_propagation(self, input)
             self.input_ = input;
-            self.output_ = zeros([self.output_size(1:2) self.input_depth*self.layer_depth]);
-            index = 1;            
-            for d=1:self.input_depth
-                for k=1:self.layer_depth
-                    self.output_(:,:,index) = self.cross_corr2(input(:,:,d), self.weights(:,:,k)) + self.bias(:,:,k);
-                    index = index + 1;
+            self.output_ = zeros(self.output_size);
+            for k=1:self.layer_depth
+                for d=1:self.input_depth
+                    self.output_(:,:,k) = self.output_(:,:,k) + self.cross_corr2(input(:,:,d), self.weights(:,:,d,k)) + self.bias(:,:,d,k);
                 end
             end
             output = self.output_;
         end
         
         function in_error = back_propagation(self, error, learning_rate)
-            in_error = zeros([self.input_size self.layer_depth]);            
-            dWeights = zeros([self.kernel_size self.input_depth*self.layer_depth]);
-            index = 1;
-            for d=1:self.input_depth
-                for k=1:self.layer_depth
-                    in_error(:,:,index) = conv2(error(:,:,k), self.weights(:,:,k));
-                    dWeights(:,:,index) = self.cross_corr2(self.input_(:,:,d), error(:,:,k));
-                    index = index + 1;
+            in_error = zeros(self.input_size);
+            dWeights = zeros([self.kernel_size self.input_depth self.layer_depth]);
+            for k=1:self.layer_depth
+                for d=1:self.input_depth
+                    in_error(:,:,d) = in_error(:,:,d) + conv2(error(:,:,k), self.weights(:,:,d,k));
+                    dWeights(:,:,d,k) = self.cross_corr2(self.input_(:,:,d), error(:,:,k));
                 end
             end
 
