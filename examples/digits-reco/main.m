@@ -8,11 +8,12 @@ function [] = main()
     fprintf("done.\n");
     
     % create a 3-layer neural network
-    net = Network();
-    net.add_layer(FullyConnectedLayer([1 1024], [1 15]));
-    net.add_layer(ActivationLayer([1 15], Activation('sigmoid')));
-    net.add_layer(FullyConnectedLayer([1 15], [1 10]));
-    net.add_layer(ActivationLayer([1 10], Activation('sigmoid')));
+    net = Network({
+        FullyConnectedLayer([1 1024], [1 15])
+        ActivationLayer([1 15], Activation('sigmoid'))
+        FullyConnectedLayer([1 15], [1 10])
+        ActivationLayer([1 10], Activation('sigmoid'))
+    });
     
     % set cost function and learning rate
     net.build(Loss('mse'), 0.2);
