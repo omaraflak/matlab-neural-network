@@ -7,6 +7,7 @@ classdef Network < handle
     
     methods(Access = public)
         function self = Network(layers)
+            size(layers)
             self.layers = layers;
         end
         
@@ -16,7 +17,7 @@ classdef Network < handle
         end
         
         function output = predict(self, input)
-            layers_count = size(self.layers, 2);     
+            layers_count = length(self.layers);
             input_shape = self.layers{1}.get_input_size();
             output_shape = self.layers{layers_count}.get_output_size();
             
@@ -28,16 +29,16 @@ classdef Network < handle
             for j=1:samples_count
                 out = input(otherdims{:}, j);
                 for i=1:layers_count
-                    out = self.layers{1,i}.forward_propagation(out);
+                    out = self.layers{i}.forward_propagation(out);
                 end
                 output(otherdims{:}, j) = out;
             end
         end
         
         function [] = fit(self, input, output, epochs)
-            layers_count = size(self.layers, 2);
+            layers_count = length(self.layers);
             input_shape = self.layers{1}.get_input_size();
-            samples_count = size(input, size(input_shape, 2) + 1);
+            samples_count = size(input, length(input_shape) + 1);
             otherdims = repmat({':'}, 1, size(input_shape, 2));
             
             for i=1:epochs
@@ -46,14 +47,14 @@ classdef Network < handle
                     % forward propagation
                     pred = input(otherdims{:}, j);
                     for k=1:layers_count
-                        pred = self.layers{1,k}.forward_propagation(pred);
+                        pred = self.layers{k}.forward_propagation(pred);
                     end
                 
                     % backward propgation
                     derror = self.loss.compute_derivative(output(otherdims{:}, j), pred);
                     error = error + self.loss.compute(output(otherdims{:}, j), pred);
                     for k=layers_count:-1:1
-                        derror = self.layers{1,k}.back_propagation(derror, self.learning_rate);
+                        derror = self.layers{k}.back_propagation(derror, self.learning_rate);
                     end
                 end
                 error = error / samples_count;
@@ -70,7 +71,7 @@ classdef Network < handle
             layers_count = size(self.layers, 2);
             data = cell(1, layers_count);
             for k=1:layers_count
-                data{1,k} = {self.layers{1,k}.get_name() self.layers{1,k}.save()};
+                data{1,k} = {self.layers{k}.get_name() self.layers{k}.save()};
             end
             save(filename, 'data');
         end
