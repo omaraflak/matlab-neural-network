@@ -6,8 +6,8 @@ classdef Network < handle
     end
     
     methods(Access = public)
-        function add_layer(self, layer)
-            self.layers{size(self.layers,2) + 1} = layer;
+        function self = Network(layers)
+            self.layers = layers;
         end
         
         function [] = build(self, loss, learning_rate)
