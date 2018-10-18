@@ -16,7 +16,7 @@ function [] = main()
     });
     
     % set cost function and learning rate
-    net.build(Loss('mse'), 0.2);
+    net.build(Loss('cross_entropy'), 0.2);
     
     % train on 30 iterations
     fprintf("training...\n");
