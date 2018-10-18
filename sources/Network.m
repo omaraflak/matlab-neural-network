@@ -7,7 +7,6 @@ classdef Network < handle
     
     methods(Access = public)
         function self = Network(layers)
-            size(layers)
             self.layers = layers;
         end
         
