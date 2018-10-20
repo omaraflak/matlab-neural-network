@@ -9,6 +9,7 @@ A simple and modular way of implementing a neural network with Matlab.
 * MaxPoolLayer(input_shape, kernel_shape)
 * FlattenLayer(input_shape)
 * ActivationLayer(input_shape, activation)
+* DropoutLayer(input_shape, drop_rate)
 
 # Activations
 
