@@ -11,6 +11,7 @@ function [] = main()
     net = Network({
         FullyConnectedLayer([1 1024], [1 15])
         ActivationLayer([1 15], Activation('sigmoid'))
+        DropoutLayer([1 15], 0.15)
         FullyConnectedLayer([1 15], [1 10])
         ActivationLayer([1 10], Activation('sigmoid'))
     });
