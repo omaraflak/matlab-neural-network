@@ -28,6 +28,8 @@ classdef (Abstract) Layer < handle
                 layer = MaxPoolLayer.load(block);
             elseif name==FlattenLayer.get_name()
                 layer = FlattenLayer.load(block);
+            elseif name==DropoutLayer.get_name()
+                layer = DropoutLayer.load(block);
             end
         end
     end
