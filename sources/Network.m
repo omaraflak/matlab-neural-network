@@ -48,9 +48,9 @@ classdef Network < handle
                         pred = self.layers{k}.forward_propagation(pred);
                     end
                 
-                    % backward propgation
-                    derror = self.loss.compute_derivative(output(otherdims{:}, j), pred);
+                    % backward propagation
                     error = error + self.loss.compute(output(otherdims{:}, j), pred);
+                    derror = self.loss.compute_derivative(output(otherdims{:}, j), pred);
                     for k=layers_count:-1:1
                         derror = self.layers{k}.back_propagation(derror, self.learning_rate);
                     end
