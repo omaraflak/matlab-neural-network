@@ -11,13 +11,12 @@ function [] = main()
     net = Network({
         FullyConnectedLayer([1 1024], [1 15])
         ActivationLayer([1 15], Activation('sigmoid'))
-        DropoutLayer([1 15], 0.15)
         FullyConnectedLayer([1 15], [1 10])
         ActivationLayer([1 10], Activation('sigmoid'))
     });
     
     % set cost function and learning rate
-    net.build(Loss('cross_entropy'), 0.2);
+    net.build(Loss('mse'), 0.2);
     
     % train on 30 iterations
     fprintf("training...\n");
@@ -25,5 +24,5 @@ function [] = main()
     
     % calculate error
     error = net.evaluate(x_test, y_test);
-    fprintf("error on test data = %f\n", error);    
+    fprintf("error on test data = %f\n", error);
 end
