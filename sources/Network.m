@@ -79,14 +79,13 @@ classdef Network < handle
         function net = load(filename)
             file = load(filename, 'data');
             data = file.data;
-            layers_count = size(data, 2);
-            net = Network();
-            for i=1:layers_count
+            layers = cell(size(data,2));
+            for i=1:length(layers)
                 layer_name = data{1,i}{1};
                 block_data = data{1,i}{2};
-                layer = Layer.build_layer(layer_name, block_data);
-                net.add_layer(layer);
+                layers{i} = Layer.build_layer(layer_name, block_data);
             end
+            net = Network(layers);
         end
     end
 end
